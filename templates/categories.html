@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Categories - Admin</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Grocery App</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                  </li> -->
+                    <!-- Work to be done- search-middle, login- extreme right -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Location</a>
+                    </li>
+                    <!-- <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form> -->
+                    <li class="nav-item">
+                        <!-- <a class="btn btn-success" href="{{ url_for('cart') }}">My Cart</a> -->
+                    <li class="nav-item">
+                        <a class="btn btn-outline-success" href="{{url_for('cart')}}">
+                            My Cart
+                            <span class="visually-hidden">Cart Items</span>
+                        </a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary" href="/user_profile">My Profile</a>
+                    </li>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary" href="/logout">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary" href="/login">Login</a>
+
+                        {% endif %}
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <h1>Categories</h1>
+    <a href="/add_categories">Add Category</a>
+    <ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>Serial no.</th>
+                    <th>Category Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                <tr>
+                    <th>{{loop.index}}.</th>
+                    <td>{{category.category_name}}</td>
+                    <td><a href="{{url_for('add_product', category_id=category.id)}}"
+                            class="btn btn-outline-success">Add Products</a> |
+                        <a href="{{url_for('edit_category', category_id=category.id)}}"
+                            class="btn btn-outline-primary">Edit Category</a> |
+                    </td>
+                    <td>
+                        <form action="{{url_for('delete_category', category_id=category.id)}}" method="POST"
+                            style="display: inline;">
+                            <button class="btn btn-outline-danger" type="submit">Delete Category</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </ul>
+
+    <!-- FLASH MESSAGE -->
+
+    <div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for category, message in messages %}
+            <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                Message:{{message}}
+            </div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
